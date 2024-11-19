@@ -175,11 +175,11 @@ def index():
             
             return render_template('index.html', 
                                  predictions=predictions,
-                                 image=img_str)
+                                 image=img_str,
+                                 filename=file.filename)  # Pass filename to template
         except Exception as e:
             return render_template('index.html', error=str(e))
     
     return render_template('index.html')
-
 if __name__ == '__main__':
     app.run(debug=True)
