@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cancer Classification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .prediction {
+            margin: 15px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .probability-bar-container {
+            margin-top: 10px;
+            background-color: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .probability-bar {
+            background-color: #4CAF50;
+            height: 20px;
+            transition: width 0.3s ease;
+        }
+        .error {
+            color: #d32f2f;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #ffebee;
+        }
+        .votes {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .upload-form {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        input[type="file"] {
+            margin: 10px 0;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .uploaded-image {
+            max-width: 500px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Cancer Classification</h1>
+    
+    <div class="upload-form">
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required>
+            <br>
+            <input type="submit" value="Classify">
+        </form>
+    </div>
+
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% if predictions %}
+    <h2>Results:</h2>
+    {% for pred in predictions %}
+    <div class="prediction">
+        <div><strong>{{ pred.class }}</strong>: {{ "%.2f"|format(pred.probability) }}%</div>
+        <div class="probability-bar-container">
+        <div class="probability-bar" data-width="{{ pred.probability }}"></div>        </div>
+        <div class="votes">Votes: {{ pred.votes }}/4 models</div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if image %}
+    <h2>Uploaded Image:</h2>
+    <img src="data:image/jpeg;base64,{{ image }}" class="uploaded-image">
+    {% endif %}
+</body>
+</html>
